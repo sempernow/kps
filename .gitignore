@@ -1,3 +1,4 @@
+**/*.tgz
 **/*.html
 **/*.log
 values.yaml

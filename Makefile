@@ -69,26 +69,26 @@ bundle :
 ## Recipes : Cluster
 
 helm :
-	bash ${ADMIN_SRC_DIR}/${kps} installHelm4Latest
+	bash ${kps} installHelm4Latest
 
 kps :=stack.sh
 pull :
-	bash ${ADMIN_SRC_DIR}/${kps} pull
+	bash ${kps} pull
 inspect :
-	bash ${ADMIN_SRC_DIR}/${kps} inspect
+	bash ${kps} inspect
 ldapca :
-	bash ${ADMIN_SRC_DIR}/${kps} ldapCA
+	bash ${kps} ldapCA
 ldaptest :
-	bash ${ADMIN_SRC_DIR}/${kps} ldapSearch
+	bash ${kps} ldapSearch
 install upgrade apply :
-	bash ${ADMIN_SRC_DIR}/${kps} install
+	bash ${kps} install
 access :
-	bash ${ADMIN_SRC_DIR}/${kps} access
+	bash ${kps} access
 delete uninstall:
 	pkill kubectl \
 	    && echo "ℹ️ : Killing all kubectl processes" \
 	    || echo "ℹ️ : No kubectl processes were running"
-	bash ${ADMIN_SRC_DIR}/${kps} delete
+	bash ${kps} delete
 
 admin :
 	@kubectl get secret -n kps -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo

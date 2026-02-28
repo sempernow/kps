@@ -19,8 +19,8 @@ export UTC      := $(shell date '+%Y-%m-%dT%H.%M.%Z')
 export LDAP_ROOT_CA     ?= lime-dc1-ca.crt
 export LDAP_HOST        ?= dc1.lime.lan
 export LDAP_SVC_ACCT    ?= svc-ldap-grafana
-export LDAP_BIND_DN     ?= CN=${LDAP_SVC_ACCT},OU=ServiceAccounts,OU=OU1,DC=lime,DC=lan
 export LDAP_SEARCH_BASE ?= DC=lime,DC=lan
+export LDAP_BIND_DN     ?= CN=${LDAP_SVC_ACCT},OU=ServiceAccounts,OU=OU1,${LDAP_SEARCH_BASE}
 
 export KPS_NAMESPACE  ?= kps
 export KPS_RELEASE    ?= kps

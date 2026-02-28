@@ -72,7 +72,7 @@ ldapCA(){
     kubectl -n $NAMESPACE create cm grafana-ldap-certs --from-file=ca.pem=$LDAP_ROOT_CA
 }
 ldapSvcPassword(){
-    secure=svc-ldap-grafana-password.age
+    secure=${LDAP_SVC_ACCT}-password.age
     [[ -f $secure ]] || return 1
     type -t agede >/dev/null 2>&1 &&
         agede $secure ||
@@ -88,21 +88,19 @@ ldapSearch(){
         -D "$LDAP_BIND_DN" \
         -w "$(ldapSvcPassword)" \
         -b "$LDAP_SEARCH_BASE" \
-        "(sAMAccountName=svc-ldap-grafana)" dn
+        "(sAMAccountName=$LDAP_SVC_ACCT)" dn
 }
 install(){
-    secure=svc-ldap-grafana-password.age
     ldap_values=values.grafana-ldap.yaml
     values="-f values.minimal.yaml -f values.ingress.yaml -f $ldap_values"
     opts="-n $NAMESPACE --create-namespace --version $VER" 
 
-    [[ -f $secure ]] || return 1
-    unset pass; type -t agede >/dev/null 2>&1 && pass="$(agede $secure)" 
+    pass="$(ldapSvcPassword)" 
     [[ $pass ]] || return 2
 
     cat $ldap_values.tpl |
         sed "s/LDAP_HOST/$LDAP_HOST/g" |
-        sed "s/SVC_LDAP_GRAFANA_PASSWORD/$(ldapSvcPassword)/g" |
+        sed "s/LDAP_SVC_ACCT_PASSWORD/$pass/g" |
         sed "s/LDAP_BIND_DN/$LDAP_BIND_DN/g" |
         sed "s/LDAP_SEARCH_BASE/$LDAP_SEARCH_BASE/g" > $ldap_values
 

@@ -4,7 +4,6 @@ grafana:
   extraConfigmapMounts:
     ## See ldap.config: root_ca_cert
     ## kubectl -n kps create cm grafana-ldap-certs --from-file=ca.pem=/path/to/ca.pem
-    ## kubectl -n kps create cm grafana-ldap-certs --from-file=ca.pem=/path/to/ca.pem
     - name: ldap-certs
       configMap: grafana-ldap-certs
       mountPath: /etc/grafana/certs
@@ -38,7 +37,7 @@ grafana:
       root_ca_cert = "/etc/grafana/certs/ca.pem"
 
       bind_dn = "LDAP_BIND_DN"
-      bind_password = "SVC_LDAP_GRAFANA_PASSWORD"
+      bind_password = "LDAP_SVC_ACCT_PASSWORD"
 
       search_filter = "(sAMAccountName=%s)"
       search_base_dns = ["LDAP_SEARCH_BASE"]
