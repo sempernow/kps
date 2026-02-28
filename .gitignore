@@ -1,0 +1,4 @@
+**/*.html
+**/*.log
+values.yaml
+values.*ldap.yaml
